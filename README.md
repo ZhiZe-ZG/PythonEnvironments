@@ -62,6 +62,98 @@ If you want to only update conda:
 conda update conda
 ```
 
+## Environment Management
+
+### Show Environments
+
+Show created environments:
+
+```powershell
+conda info --envs
+```
+
+### Choose an Environment
+
+Select an environment by its name with `--name`. Use `--prefix` to select the environment through the environment path. You can't use both at the same time. In general, name selection is only available for environments installed to the Conda default path. So I recommend using path.
+
+### Create and Delete Environments
+
+Create an environment:
+
+```powershell
+conda create --prefix ./env/hre
+```
+
+Delete an environment:
+
+```powershell
+conda env remove --prefix ./env/hre
+```
+
+### Activate and Deactivate Environments
+
+Activate an environment (by paths or names, here using the path):
+
+```powershell
+conda activate ./env/hre
+```
+
+Deactivate the current environment:
+
+```powershell
+conda deactivate
+```
+
+### Environment YML File
+
+To ensure the environment can be re-created, you should keep the environment YML file. Refer to: <https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>。
+
+Create an environment from an environment YML file:
+
+```powershell
+conda env create -f environment_hre.yml --prefix ./env/hre
+```
+
+Update an environment according to n environment YML file (`--prune` to remove packages that are not needed anymore):
+
+```powershell
+conda env update -f environment_hre.yml --prefix ./env/hre  --prune
+```
+
+Export an environment YML file based on the current environment:
+
+```powershell
+conda env export | Select-String 'name:|prefix:' -notmatch | Set-Content environment_hre_windows.yml
+```
+
+The `Select-String 'name:|prefix:' -notmatch` remove the `name` line and `prefix` line. They are typically specified via command-line parameters, so they don't need to appear in the environment YML file.
+
+### Conda-Pack Environment Package
+
+For the same system, use Conda-Pack to provide environment packaging. This saves you the hassle of downloading the packages repeatedly. For more information, please refer to: <https://conda.github.io/conda-pack/>.
+
+Package the specified environment (you can also specify the global environment by name with '-n'):
+
+```powershell
+conda pack --prefix ./env/hre -o env_hre.tar.gz
+```
+
+Unzip the zip package (Windows now has the basic unix-like decompression tools such as tar):
+
+```powershell
+New-Item -Path ./env -Name "hre_windows" -ItemType "directory"
+tar -xvzf env_hre_windows.tar.gz -C ./env/hre_windows
+```
+
+Enable the specified environment after unpacking ('conda-unpack' is used for some path settings after unzip):
+
+```powershell
+conda activate ./env/hre_windows
+conda-unpack
+```
+
+
+
 ## 开发环境 | Development Environment
 
 ### 管理方式
@@ -75,83 +167,7 @@ conda update conda
 * `hre_windows`: Windows 系统默认，按 GPU 配置但是也可以使用 CPU。
 * `hre_linux`: Linux 系统默认，按 GPU 配置但是也可以使用 CPU。
 
-对于每一个环境，至少提供环境说明文档以确保能重建环境。详情参考： <https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>。
-
-此外，对于相同系统环境，如果可以，使用 Conda-Pack 提供环境打包。这样可以避免反复下载安装包的麻烦。详情参考： <https://conda.github.io/conda-pack/>。
-
 ### 通用管理命令
-
-查看当前已创建的环境：
-
-```powershell
-conda info --envs
-```
-
-对环境做操作时可以使用 `--name` 参数后接环境名指定，也可以使用 `--prefix` 参数后接路径指定。这两种选择方式不能同时使用。一般来说使用环境名指定的是对于 Conda 来说全局安装的环境。
-
-创建环境使用命令：
-
-```powershell
-conda env create --prefix ./env/hre
-```
-
-删除环境使用命令：
-
-```powershell
-conda env remove --prefix ./env/hre
-```
-
-激活指定环境使用命令：
-
-```powershell
-conda activate ./env/hre
-```
-
-取消当前环境激活状态使用命令：
-
-```powershell
-conda deactivate
-```
-
-### `hre_windows` 常用管理命令
-
-按照环境记录文件安装环境到指定路径：
-
-```powershell
-conda env create -f environment_hre_windows.yml --prefix ./env/hre_windows
-```
-
-按环境记录文件更新指定路径的环境（`--prune` 参数用于移除不再需要的包）：
-
-```powershell
-conda env update -f environment_hre_windows.yml --prefix ./env/hre_windows  --prune
-```
-
-导出当前激活环境记录文件（prefix 行和 name 行会直接删掉）：
-
-```powershell
-conda env export | Select-String 'name:|prefix:' -notmatch | Set-Content environment_hre_windows.yml
-```
-
-打包指定环境（也可以用 `-n` 通过名称指定打印全局环境）：
-
-```powershell
-conda pack --prefix ./env/hre_windows -o env_hre_windows.tar.gz
-```
-
-解压压缩包（Windows 现在自带了 tar 等基本解压工具）：
-
-```powershell
-New-Item -Path ./env -Name "hre_windows" -ItemType "directory"
-tar -xvzf env_hre_windows.tar.gz -C ./env/hre_windows
-```
-
-解压后启用指定环境（`conda-unpack` 用于打包时的一些路径设置）：
-
-```powershell
-conda activate ./env/hre_windows
-conda-unpack
-```
 
 ### `hre_linux` 常用管理命令
 
@@ -197,15 +213,3 @@ conda-unpack
 
 这里简单列举本项目所需要的开发环境：
 
-| 名称                           | Conda 包名   | Pip 包名 | 用途                                        |
-| ------------------------------ | ------------ | -------- | ------------------------------------------- |
-| PyTorch                        |              |          | 张量运算引擎                                |
-| PyTorchLightning               |              |          | 方便编写 PyTorch 训练脚本和数据可视化       |
-| TensorBoard                    | tensorboard  |          | 用于记录和查看训练记录                      |
-| Matplotlib                     | matplotlib   |          | 图表绘制                                    |
-| IPython                        | ipython      |          | 更好用一点的 Python Shell                   |
-| black                          | black        |          | Code formatting tools.  由于 VS Code Python插件的更新，该包不再是必要的。 |
-| Sklearn                        | scikit-learn |          | 计算评价指标                                |
-
-* PyTorch 按照官方的给出的 Conda 命令安装，连同 `torchvision` 和最新支持的 CUDA 一起安装。
-* PyTorchLightning 按照官方给出的 Conda 命令安装。
