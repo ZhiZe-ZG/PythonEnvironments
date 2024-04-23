@@ -17,6 +17,7 @@ Main packages:
 | TorchMetrics     | torchmetrics       | conda-forge   |                  | Calculate metrics. Support PyTorchLightning |
 | Sklearn          | scikit-learn       | conda-forge   |                  | Some classic machine learning method.       |
 | Skimage          | scikit-image       | conda-forge   |                  | Handle image files.                         |
+| x-unet           |                    |               | x-unet           | Classic UNet implementation                 |
 
 * PyTorch, Pytorch Vision, Pytorch Audio were installed according to Conda command at [official web pages](https://pytorch.org/).
 * PyTorchLightning was installed according to Conda command at [official web pages](https://lightning.ai/docs/pytorch/stable/).
