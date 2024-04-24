@@ -175,4 +175,3 @@ dependencies:
       - einops==0.7.0
       - torchaudio==2.2.2
       - torchvision==0.17.2
-      - x-unet==0.3.1
