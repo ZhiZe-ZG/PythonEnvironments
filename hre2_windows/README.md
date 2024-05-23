@@ -13,6 +13,8 @@ Main packages:
 | PyTorchLightning | lightning          | conda-forge   |                  | PyTorch models training utils.              |
 | TensorBoard      | tensorboard        | conda-forge   |                  | Logging training.                           |
 | Matplotlib       | matplotlib         | conda-forge   |                  | Draw figures.                               |
+| Seaborn          | seaborn            | conda-forge   |                  | Draw statistical figures                    |
+| Pandas           | pandas             | confa-forge   |                  | Load table data                             |
 | IPython          | ipython            | conda-forge   |                  | Better Python interactive shell.            |
 | TorchMetrics     | torchmetrics       | conda-forge   |                  | Calculate metrics. Support PyTorchLightning |
 | Sklearn          | scikit-learn       | conda-forge   |                  | Some classic machine learning method.       |
