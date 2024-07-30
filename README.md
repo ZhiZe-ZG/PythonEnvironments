@@ -151,3 +151,15 @@ Enable the specified environment after unpacking ('conda-unpack' is used for som
 conda activate ./env/hre_windows
 conda-unpack
 ```
+
+## About version number
+
+Version number syntax:
+
+```text
+major_number.minor_number.patch_number
+```
+
+A environment with same content for different platform should have save `major_number` and `minor_number` but the `patch_number` can be different.
+
+Fully updating all packages changes the `minor_number`. Deleting or adding packages changes the `major_number`. Other small changes will change the `patch_number`.
