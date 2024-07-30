@@ -1,6 +1,6 @@
-# hre_windows Environment
+# hre Environment
 
-Used for HRE-related researches on Windows system.
+Used for HRE-related researches on Windows system and Linux systems.
 
 Main packages:
 
