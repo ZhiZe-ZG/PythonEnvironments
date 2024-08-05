@@ -22,3 +22,9 @@ Main packages:
 
 * PyTorch, Pytorch Vision, Pytorch Audio were installed according to Conda command at [official web pages](https://pytorch.org/).
 * PyTorchLightning was installed according to Conda command at [official web pages](https://lightning.ai/docs/pytorch/stable/).
+
+## Update log
+
+### 2.1.0
+
+* Download tensorborad from conda-forge to get the newest version. (use: `conda install conda-forge::tensorboard`)
